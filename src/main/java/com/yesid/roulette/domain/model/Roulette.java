@@ -12,13 +12,23 @@ public class Roulette implements Serializable {
 		this.id = id;
 		this.rouletteStatus = rouletteStatus;
 	}
+	
+	public Roulette() {};
 
 	public String getId() {
 		return id;
+	}	
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public RouletteStatus getRouletteStatus() {
 		return rouletteStatus;
+	}
+	
+	public void setRouletteStatus(RouletteStatus rouletteStatus) {
+		this.rouletteStatus = rouletteStatus;
 	}
 
 }
