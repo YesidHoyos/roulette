@@ -19,7 +19,11 @@ class CroupierTest {
 	
 	private static final String ROULETTE_NOT_YET_CREATED = "La ruleta aún no ha sido creada";
 	private static final String ROULETTE_ALREADY_OPEN = "La ruleta ya ha sido abierta anteriormente";
-	private static final String ROULETTE_CLOSED = "La ruleta ha sido cerrada anteriormente";
+	private static final String ROULETTE_CLOSED = "La ruleta ya ha sido cerrada";
+	private static final String ROULETTE_NOT_OPEN = "La ruleta aún no ha sido abierta";
+	private static final String MAXIMUM_AMOUNT_EXCEEDED = "El monto apostado supera el máximo permitido";
+	private static final String INVALID_NUMBER = "El número apostado no es valido";
+	private static final String INVALID_COLOR = "El color apostado no es valido";
 
 	@Mock
 	RouletteRepository rouletteRepository;
@@ -85,6 +89,113 @@ class CroupierTest {
 			fail();
 		} catch (Exception e) {
 			Assertions.assertEquals(ROULETTE_CLOSED, e.getMessage());
+		}
+	}
+	
+	@Test
+	void betRouletteNotOpen() {
+		BettingInformation bettingInformation = new BettingInformation();
+		bettingInformation.setValue("5");
+		bettingInformation.setAmount(10d);
+		bettingInformation.setRouletteId("123abc");
+		bettingInformation.setUserId("123");
+		Roulette roulette = new Roulette("123ABC", RouletteStatus.CREATED);
+		when(rouletteRepository.findRoulette(Mockito.anyString())).thenReturn(Optional.of(roulette));
+		when(rouletteRepository.saveBet(Mockito.any())).thenReturn(1l);
+		try {
+			croupier.bet(bettingInformation);
+			fail();
+		} catch (Exception e) {
+			Assertions.assertEquals(ROULETTE_NOT_OPEN, e.getMessage());
+		}
+	}
+	
+	@Test
+	void betRouletteNotCreated() {
+		BettingInformation bettingInformation = new BettingInformation();
+		bettingInformation.setValue("5");
+		bettingInformation.setAmount(10d);
+		bettingInformation.setRouletteId("123abc");
+		bettingInformation.setUserId("123");
+		when(rouletteRepository.findRoulette(Mockito.anyString())).thenReturn(Optional.empty());
+		when(rouletteRepository.saveBet(Mockito.any())).thenReturn(1l);
+		try {
+			croupier.bet(bettingInformation);
+			fail();
+		} catch (Exception e) {
+			Assertions.assertEquals(ROULETTE_NOT_YET_CREATED, e.getMessage());
+		}
+	}
+	
+	@Test
+	void betRouletteClosed() {
+		BettingInformation bettingInformation = new BettingInformation();
+		bettingInformation.setValue("5");
+		bettingInformation.setAmount(10d);
+		bettingInformation.setRouletteId("123abc");
+		bettingInformation.setUserId("123");
+		Roulette roulette = new Roulette("123ABC", RouletteStatus.CLOSED);
+		when(rouletteRepository.findRoulette(Mockito.anyString())).thenReturn(Optional.of(roulette));
+		when(rouletteRepository.saveBet(Mockito.any())).thenReturn(1l);
+		try {
+			croupier.bet(bettingInformation);
+			fail();
+		} catch (Exception e) {
+			Assertions.assertEquals(ROULETTE_CLOSED, e.getMessage());
+		}
+	}
+	
+	@Test
+	void betRouletteAmountExceeded() {
+		BettingInformation bettingInformation = new BettingInformation();
+		bettingInformation.setValue("36");
+		bettingInformation.setAmount(11000d);
+		bettingInformation.setRouletteId("123abc");
+		bettingInformation.setUserId("123");
+		Roulette roulette = new Roulette("123ABC", RouletteStatus.OPEN);
+		when(rouletteRepository.findRoulette(Mockito.anyString())).thenReturn(Optional.of(roulette));
+		when(rouletteRepository.saveBet(Mockito.any())).thenReturn(1l);
+		try {
+			croupier.bet(bettingInformation);
+			fail();
+		} catch (Exception e) {
+			Assertions.assertEquals(MAXIMUM_AMOUNT_EXCEEDED, e.getMessage());
+		}
+	}
+	
+	@Test
+	void betRouletteInvalidNumber() {
+		BettingInformation bettingInformation = new BettingInformation();
+		bettingInformation.setValue("37");
+		bettingInformation.setAmount(11000d);
+		bettingInformation.setRouletteId("123abc");
+		bettingInformation.setUserId("123");
+		Roulette roulette = new Roulette("123ABC", RouletteStatus.OPEN);
+		when(rouletteRepository.findRoulette(Mockito.anyString())).thenReturn(Optional.of(roulette));
+		when(rouletteRepository.saveBet(Mockito.any())).thenReturn(1l);
+		try {
+			croupier.bet(bettingInformation);
+			fail();
+		} catch (Exception e) {
+			Assertions.assertEquals(INVALID_NUMBER, e.getMessage());
+		}
+	}
+	
+	@Test
+	void betRouletteInvalidColor() {
+		BettingInformation bettingInformation = new BettingInformation();
+		bettingInformation.setValue("blue");
+		bettingInformation.setAmount(11000d);
+		bettingInformation.setRouletteId("123abc");
+		bettingInformation.setUserId("123");
+		Roulette roulette = new Roulette("123ABC", RouletteStatus.OPEN);
+		when(rouletteRepository.findRoulette(Mockito.anyString())).thenReturn(Optional.of(roulette));
+		when(rouletteRepository.saveBet(Mockito.any())).thenReturn(1l);
+		try {
+			croupier.bet(bettingInformation);
+			fail();
+		} catch (Exception e) {
+			Assertions.assertEquals(INVALID_COLOR, e.getMessage());
 		}
 	}
 
