@@ -4,8 +4,11 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
+import com.yesid.roulette.domain.model.BettingInformation;
 import com.yesid.roulette.domain.model.Roulette;
 import com.yesid.roulette.domain.repository.RouletteRepository;
+import com.yesid.roulette.infrastructure.repository.util.BettingInformationUtil;
+import com.yesid.roulette.infrastructure.repository.util.RouletteUtil;
 
 import redis.clients.jedis.Jedis;
 
@@ -37,6 +40,13 @@ public class RouletteRepositoryImpl implements RouletteRepository {
 	@Override
 	public String updateRoulette(Roulette roulette) {
 		return saveRoulette(roulette);
+	}
+
+	@Override
+	public Long saveBet(BettingInformation bettingInformation) {
+		String key = bettingInformation.getRouletteId().concat("bet");
+		String jsonBettingInformation = BettingInformationUtil.convertToJson(bettingInformation);
+		return redisClient.sadd(key.getBytes(), jsonBettingInformation.getBytes());
 	}
 
 }

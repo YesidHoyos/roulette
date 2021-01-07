@@ -1,4 +1,4 @@
-package com.yesid.roulette.infrastructure.repository.persistence;
+package com.yesid.roulette.infrastructure.repository.util;
 
 import java.io.IOException;
 
