@@ -12,10 +12,11 @@ import com.yesid.roulette.domain.service.RouletteOpener;
 
 public class Croupier implements RouletteCreator, RouletteOpener, RouletteBettor, RouletteCloser {
 	
+	private static final String AMOUNT_INVALID = "El monto apostado no es válido";
 	private static final String COLOR_RED = "red";
 	private static final String COLOR_BLACK = "black";
-	private static final String INVALID_NUMBER = "El número apostado no es valido";
-	private static final String INVALID_COLOR = "El color apostado no es valido";
+	private static final String INVALID_NUMBER = "El número apostado no es válido";
+	private static final String INVALID_COLOR = "El color apostado no es válido";
 	private static final String MAXIMUM_AMOUNT_EXCEEDED = "El monto apostado supera el máximo permitido";
 	private static final double MAXIMUM_AMOUNT = 10000d;
 	private static final String ROULETTE_NOT_YET_CREATED = "La ruleta aún no ha sido creada";
@@ -49,7 +50,7 @@ public class Croupier implements RouletteCreator, RouletteOpener, RouletteBettor
 	@Override
 	public void bet(BettingInformation bettingInformation) {
 		validateValue(bettingInformation.getValue());
-		validateMaximumAmount(bettingInformation.getBetAmount());
+		validateAmount(bettingInformation.getBetAmount());
 		validateRouletteOpen(bettingInformation.getRouletteId());		
 		rouletteRepository.saveBet(bettingInformation);
 	}
@@ -159,10 +160,9 @@ public class Croupier implements RouletteCreator, RouletteOpener, RouletteBettor
 		}
 	}
 
-	private void validateMaximumAmount(double amount) {
-		if(amount > MAXIMUM_AMOUNT) {
-			throw new RuntimeException(MAXIMUM_AMOUNT_EXCEEDED);
-		}
+	private void validateAmount(double amount) {
+		if(amount > MAXIMUM_AMOUNT) throw new RuntimeException(MAXIMUM_AMOUNT_EXCEEDED);
+		if(amount <= 0) throw new RuntimeException(AMOUNT_INVALID);
 	}
 
 	private void validateRouletteToOpen(Roulette roulette) {
