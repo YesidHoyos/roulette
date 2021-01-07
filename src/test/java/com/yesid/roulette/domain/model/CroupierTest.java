@@ -96,7 +96,7 @@ class CroupierTest {
 	void betRouletteNotOpen() {
 		BettingInformation bettingInformation = new BettingInformation();
 		bettingInformation.setValue("5");
-		bettingInformation.setAmount(10d);
+		bettingInformation.setBetAmount(10d);
 		bettingInformation.setRouletteId("123abc");
 		bettingInformation.setUserId("123");
 		Roulette roulette = new Roulette("123ABC", RouletteStatus.CREATED);
@@ -114,7 +114,7 @@ class CroupierTest {
 	void betRouletteNotCreated() {
 		BettingInformation bettingInformation = new BettingInformation();
 		bettingInformation.setValue("5");
-		bettingInformation.setAmount(10d);
+		bettingInformation.setBetAmount(10d);
 		bettingInformation.setRouletteId("123abc");
 		bettingInformation.setUserId("123");
 		when(rouletteRepository.findRoulette(Mockito.anyString())).thenReturn(Optional.empty());
@@ -131,7 +131,7 @@ class CroupierTest {
 	void betRouletteClosed() {
 		BettingInformation bettingInformation = new BettingInformation();
 		bettingInformation.setValue("5");
-		bettingInformation.setAmount(10d);
+		bettingInformation.setBetAmount(10d);
 		bettingInformation.setRouletteId("123abc");
 		bettingInformation.setUserId("123");
 		Roulette roulette = new Roulette("123ABC", RouletteStatus.CLOSED);
@@ -149,7 +149,7 @@ class CroupierTest {
 	void betRouletteAmountExceeded() {
 		BettingInformation bettingInformation = new BettingInformation();
 		bettingInformation.setValue("36");
-		bettingInformation.setAmount(11000d);
+		bettingInformation.setBetAmount(11000d);
 		bettingInformation.setRouletteId("123abc");
 		bettingInformation.setUserId("123");
 		Roulette roulette = new Roulette("123ABC", RouletteStatus.OPEN);
@@ -167,7 +167,7 @@ class CroupierTest {
 	void betRouletteInvalidNumber() {
 		BettingInformation bettingInformation = new BettingInformation();
 		bettingInformation.setValue("37");
-		bettingInformation.setAmount(11000d);
+		bettingInformation.setBetAmount(11000d);
 		bettingInformation.setRouletteId("123abc");
 		bettingInformation.setUserId("123");
 		Roulette roulette = new Roulette("123ABC", RouletteStatus.OPEN);
@@ -185,7 +185,7 @@ class CroupierTest {
 	void betRouletteInvalidColor() {
 		BettingInformation bettingInformation = new BettingInformation();
 		bettingInformation.setValue("blue");
-		bettingInformation.setAmount(11000d);
+		bettingInformation.setBetAmount(11000d);
 		bettingInformation.setRouletteId("123abc");
 		bettingInformation.setUserId("123");
 		Roulette roulette = new Roulette("123ABC", RouletteStatus.OPEN);

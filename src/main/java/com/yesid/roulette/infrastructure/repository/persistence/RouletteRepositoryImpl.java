@@ -1,6 +1,8 @@
 package com.yesid.roulette.infrastructure.repository.persistence;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.stereotype.Repository;
 
@@ -47,6 +49,17 @@ public class RouletteRepositoryImpl implements RouletteRepository {
 		String key = bettingInformation.getRouletteId().concat("bet");
 		String jsonBettingInformation = BettingInformationUtil.convertToJson(bettingInformation);
 		return redisClient.sadd(key.getBytes(), jsonBettingInformation.getBytes());
+	}
+
+	@Override
+	public Set<BettingInformation> getAllBets(String rouletteId) {
+		String key = rouletteId.concat("bet");
+		Set<byte[]> bettingsInformationBytes = redisClient.smembers(key.getBytes());
+		Set<BettingInformation> bettingsInformation = new HashSet<>();
+		bettingsInformationBytes.forEach(bettingInformation -> 
+			bettingsInformation.add(BettingInformationUtil.convertToObject(new String(bettingInformation)))
+		);
+		return bettingsInformation;
 	}
 
 }

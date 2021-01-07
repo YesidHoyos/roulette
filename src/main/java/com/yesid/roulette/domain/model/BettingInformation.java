@@ -6,9 +6,11 @@ public class BettingInformation implements Serializable {
 
 	private static final long serialVersionUID = 6828764498619937240L;
 	private String value;
-	private double amount;
+	private double betAmount;
+	private double amountEarned;
 	private String userId;
 	private String rouletteId;
+	private int winningNumber;
 	
 	public String getValue() {
 		return value;
@@ -16,11 +18,17 @@ public class BettingInformation implements Serializable {
 	public void setValue(String value) {
 		this.value = value;
 	}
-	public double getAmount() {
-		return amount;
+	public double getBetAmount() {
+		return betAmount;
 	}
-	public void setAmount(double amount) {
-		this.amount = amount;
+	public void setBetAmount(double amount) {
+		this.betAmount = amount;
+	}
+	public double getAmountEarned() {
+		return amountEarned;
+	}
+	public void setAmountEarned(double amountEarned) {
+		this.amountEarned = amountEarned;
 	}
 	public String getUserId() {
 		return userId;
@@ -33,6 +41,12 @@ public class BettingInformation implements Serializable {
 	}
 	public void setRouletteId(String rouletteId) {
 		this.rouletteId = rouletteId;
+	}
+	public int getWinningNumber() {
+		return winningNumber;
+	}
+	public void setWinningNumber(int winningNumber) {
+		this.winningNumber = winningNumber;
 	}	
 	
 }
