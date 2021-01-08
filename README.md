@@ -1,4 +1,4 @@
-# Roullete
+# Roulette
 Microservice for online betting roulette
 
 ## Table of contents
