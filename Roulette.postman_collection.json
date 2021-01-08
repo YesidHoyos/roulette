@@ -1,0 +1,125 @@
+{
+	"info": {
+		"_postman_id": "72118576-28ed-4f12-b27f-7af28be32a2c",
+		"name": "Roulette",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CreateRoulette",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/roulette",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"roulette"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetRoulettes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/roulette",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"roulette"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "OpenRoulette",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/roulette/{rouletteId}/open",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"roulette",
+						"{rouletteId}",
+						"open"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CloseRoulette",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/roulette/{rouletteId}/close",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"roulette",
+						"{rouletteId}",
+						"close"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BetRoulette",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "userId",
+						"value": "012345",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"value\":\"5\",\r\n    \"betAmount\":10\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/roulette/{rouletteId}/bet",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"roulette",
+						"{rouletteId}",
+						"bet"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
