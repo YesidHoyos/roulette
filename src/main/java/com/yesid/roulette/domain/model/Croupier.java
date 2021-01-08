@@ -8,9 +8,10 @@ import com.yesid.roulette.domain.repository.RouletteRepository;
 import com.yesid.roulette.domain.service.RouletteBettor;
 import com.yesid.roulette.domain.service.RouletteCloser;
 import com.yesid.roulette.domain.service.RouletteCreator;
+import com.yesid.roulette.domain.service.RouletteFinder;
 import com.yesid.roulette.domain.service.RouletteOpener;
 
-public class Croupier implements RouletteCreator, RouletteOpener, RouletteBettor, RouletteCloser {
+public class Croupier implements RouletteCreator, RouletteOpener, RouletteBettor, RouletteCloser, RouletteFinder {
 	
 	private static final String AMOUNT_INVALID = "El monto apostado no es válido";
 	private static final String COLOR_RED = "red";
@@ -63,6 +64,11 @@ public class Croupier implements RouletteCreator, RouletteOpener, RouletteBettor
 		rouletteRepository.updateRoulette(roulette);
 		int winningNumber = getWinningNumber();
 		return payBets(rouletteId, winningNumber);
+	}
+
+	@Override
+	public Set<Roulette> getAllRoulettes() {
+		return rouletteRepository.getAllRoulettes();
 	}
 	
 	private void validateRouletteToClose(RouletteStatus rouletteStatus) {

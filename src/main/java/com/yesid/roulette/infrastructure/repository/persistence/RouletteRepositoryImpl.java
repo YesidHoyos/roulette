@@ -17,6 +17,7 @@ import redis.clients.jedis.Jedis;
 @Repository
 public class RouletteRepositoryImpl implements RouletteRepository {
 	
+	private static final String ROULETTE_INITIAL_KEY = "roulette-";
 	private Jedis redisClient;
 
 	public RouletteRepositoryImpl(Jedis redisClient) {
@@ -25,13 +26,15 @@ public class RouletteRepositoryImpl implements RouletteRepository {
 
 	@Override
 	public String saveRoulette(Roulette roulette) {
+		String key = ROULETTE_INITIAL_KEY.concat(roulette.getId());
 		String jsonRoulette = RouletteUtil.convertToJson(roulette);
-		return redisClient.set(roulette.getId().getBytes(), jsonRoulette.getBytes());
+		return redisClient.set(key.getBytes(), jsonRoulette.getBytes());
 	}
 
 	@Override
 	public Optional<Roulette> findRoulette(String rouletteId) {
-		byte[] rouletteBytes = redisClient.get(rouletteId.getBytes());
+		String key = ROULETTE_INITIAL_KEY.concat(rouletteId);
+		byte[] rouletteBytes = redisClient.get(key.getBytes());
 		if(rouletteBytes == null || rouletteBytes.length == 0) {
 			return Optional.empty();
 		}
@@ -60,6 +63,18 @@ public class RouletteRepositoryImpl implements RouletteRepository {
 			bettingsInformation.add(BettingInformationUtil.convertToObject(new String(bettingInformation)))
 		);
 		return bettingsInformation;
+	}
+
+	@Override
+	public Set<Roulette> getAllRoulettes() {
+		byte[] pattern = "roulette-*".getBytes();
+		Set<byte[]> keys = redisClient.keys(pattern);
+		Set<Roulette> roulettes = new HashSet<>();
+		keys.forEach(key -> {
+			String rouletteId = new String(key).substring(9);
+			roulettes.add(findRoulette(rouletteId).get());
+		});
+		return roulettes;
 	}
 
 }
