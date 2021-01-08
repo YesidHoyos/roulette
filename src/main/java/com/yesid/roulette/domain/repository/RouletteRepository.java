@@ -13,4 +13,5 @@ public interface RouletteRepository {
 	public String updateRoulette(Roulette roulette);
 	public Long saveBet(BettingInformation bettingInformation);
 	public Set<BettingInformation> getAllBets(String rouletteId);
+	public Set<Roulette> getAllRoulettes();
 }
