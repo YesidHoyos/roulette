@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
+import com.yesid.roulette.domain.repository.BetRepository;
 import com.yesid.roulette.domain.repository.RouletteRepository;
 import com.yesid.roulette.domain.service.RouletteBettor;
 import com.yesid.roulette.domain.service.RouletteCloser;
@@ -25,9 +26,11 @@ public class Croupier implements RouletteCreator, RouletteOpener, RouletteBettor
 	private static final String ROULETTE_CLOSED = "La ruleta ya ha sido cerrada";
 	private static final String ROULETTE_NOT_OPEN = "La ruleta aún no ha sido abierta";
 	private RouletteRepository rouletteRepository;
+	private BetRepository betRepository;
 
-	public Croupier(RouletteRepository repository) {
+	public Croupier(RouletteRepository repository, BetRepository betRepository) {
 		this.rouletteRepository = repository;
+		this.betRepository = betRepository;
 	}
 	
 	@Override
@@ -53,7 +56,7 @@ public class Croupier implements RouletteCreator, RouletteOpener, RouletteBettor
 		validateValue(bettingInformation.getValue());
 		validateAmount(bettingInformation.getBetAmount());
 		validateRouletteOpen(bettingInformation.getRouletteId());		
-		rouletteRepository.saveBet(bettingInformation);
+		betRepository.saveBet(bettingInformation);
 	}
 	
 	@Override
@@ -84,7 +87,7 @@ public class Croupier implements RouletteCreator, RouletteOpener, RouletteBettor
 
 	private Set<BettingInformation> payBets(String rouletteId, int winningNumber) {
 		String winningColor = evenNumber(winningNumber) ? COLOR_RED : COLOR_BLACK;
-		Set<BettingInformation> bettingsInformation = rouletteRepository.getAllBets(rouletteId);
+		Set<BettingInformation> bettingsInformation = betRepository.getAllBets(rouletteId);
 		bettingsInformation.forEach(bettingInformation -> {
 			bettingInformation.setWinningNumber(winningNumber);
 			String value = bettingInformation.getValue();			
