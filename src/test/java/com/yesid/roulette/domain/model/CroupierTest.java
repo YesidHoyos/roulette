@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.yesid.roulette.domain.repository.BetRepository;
 import com.yesid.roulette.domain.repository.RouletteRepository;
 
 @SpringBootTest
@@ -22,11 +23,14 @@ class CroupierTest {
 	private static final String ROULETTE_CLOSED = "La ruleta ya ha sido cerrada";
 	private static final String ROULETTE_NOT_OPEN = "La ruleta aún no ha sido abierta";
 	private static final String MAXIMUM_AMOUNT_EXCEEDED = "El monto apostado supera el máximo permitido";
-	private static final String INVALID_NUMBER = "El número apostado no es valido";
-	private static final String INVALID_COLOR = "El color apostado no es valido";
+	private static final String INVALID_NUMBER = "El número apostado no es válido";
+	private static final String INVALID_COLOR = "El color apostado no es válido";
 
 	@Mock
 	RouletteRepository rouletteRepository;
+	
+	@Mock
+	BetRepository betRepository;
 	
 	@InjectMocks
 	Croupier croupier;
@@ -101,7 +105,7 @@ class CroupierTest {
 		bettingInformation.setUserId("123");
 		Roulette roulette = new Roulette("123ABC", RouletteStatus.CREATED);
 		when(rouletteRepository.findRoulette(Mockito.anyString())).thenReturn(Optional.of(roulette));
-		when(rouletteRepository.saveBet(Mockito.any())).thenReturn(1l);
+		when(betRepository.saveBet(Mockito.any())).thenReturn(1l);
 		try {
 			croupier.bet(bettingInformation);
 			fail();
@@ -118,7 +122,7 @@ class CroupierTest {
 		bettingInformation.setRouletteId("123abc");
 		bettingInformation.setUserId("123");
 		when(rouletteRepository.findRoulette(Mockito.anyString())).thenReturn(Optional.empty());
-		when(rouletteRepository.saveBet(Mockito.any())).thenReturn(1l);
+		when(betRepository.saveBet(Mockito.any())).thenReturn(1l);
 		try {
 			croupier.bet(bettingInformation);
 			fail();
@@ -136,7 +140,7 @@ class CroupierTest {
 		bettingInformation.setUserId("123");
 		Roulette roulette = new Roulette("123ABC", RouletteStatus.CLOSED);
 		when(rouletteRepository.findRoulette(Mockito.anyString())).thenReturn(Optional.of(roulette));
-		when(rouletteRepository.saveBet(Mockito.any())).thenReturn(1l);
+		when(betRepository.saveBet(Mockito.any())).thenReturn(1l);
 		try {
 			croupier.bet(bettingInformation);
 			fail();
@@ -154,7 +158,7 @@ class CroupierTest {
 		bettingInformation.setUserId("123");
 		Roulette roulette = new Roulette("123ABC", RouletteStatus.OPEN);
 		when(rouletteRepository.findRoulette(Mockito.anyString())).thenReturn(Optional.of(roulette));
-		when(rouletteRepository.saveBet(Mockito.any())).thenReturn(1l);
+		when(betRepository.saveBet(Mockito.any())).thenReturn(1l);
 		try {
 			croupier.bet(bettingInformation);
 			fail();
@@ -172,7 +176,7 @@ class CroupierTest {
 		bettingInformation.setUserId("123");
 		Roulette roulette = new Roulette("123ABC", RouletteStatus.OPEN);
 		when(rouletteRepository.findRoulette(Mockito.anyString())).thenReturn(Optional.of(roulette));
-		when(rouletteRepository.saveBet(Mockito.any())).thenReturn(1l);
+		when(betRepository.saveBet(Mockito.any())).thenReturn(1l);
 		try {
 			croupier.bet(bettingInformation);
 			fail();
@@ -190,7 +194,7 @@ class CroupierTest {
 		bettingInformation.setUserId("123");
 		Roulette roulette = new Roulette("123ABC", RouletteStatus.OPEN);
 		when(rouletteRepository.findRoulette(Mockito.anyString())).thenReturn(Optional.of(roulette));
-		when(rouletteRepository.saveBet(Mockito.any())).thenReturn(1l);
+		when(betRepository.saveBet(Mockito.any())).thenReturn(1l);
 		try {
 			croupier.bet(bettingInformation);
 			fail();
